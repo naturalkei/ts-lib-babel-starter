@@ -2,20 +2,35 @@
 
 based on <https://github.com/bitjson/typescript-starter>
 
-## TODO
+## Project
 
-* Project Setting
-  * [ ] git
-  * [ ] package.json
-  * [ ] typescript
-  * [ ] test source
-  * [ ] ava
-  * [ ] nyc
-  * [ ] typedoc
-  * [ ] gh-page
-* [ ] Typesciprt
-
+* Setup
+  * [x] github
+  * [ ] npm init
+    * [ ] package.json
+    * [ ] dependencies
+    * [ ] devdependencies
+    * [ ] d
+  * License
+  * typesciprt
+    * [ ] tsc init
+    * [ ] tslint
+  * test source
+  * typedoc
+    * [ ] gh-page
+  * build
+    * circle-ci
+  * test
+    * [ ] ava
+    * [ ] nyc
+    * code coverage
+      * [ ] <https://coveralls.io>
+      
 ## Project
 
 * npm-test-flow
-  * [ ] v1.0.0
+
+## Milestone
+
+* [ ] v0.0.1
+* [ ] v0.0.1
