@@ -1,5 +1,7 @@
 # ts-starter-1
 
+## ini
+
 based on <https://github.com/bitjson/typescript-starter>
 
 ## Project
@@ -10,7 +12,7 @@ based on <https://github.com/bitjson/typescript-starter>
     * [ ] package.json
     * [ ] dependencies
     * [ ] devdependencies
-    * [ ] d
+  * [ ] Greenkeeper
   * License
   * typesciprt
     * [ ] tsc init
