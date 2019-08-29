@@ -1,6 +1,13 @@
 # ts-starter-1
 
+[![Coverage Status](https://coveralls.io/repos/github/Euiyeon/ts-starter-1/badge.svg)](https://coveralls.io/github/Euiyeon/ts-starter-1)
+[![CircleCI](https://circleci.com/gh/Euiyeon/ts-starter-1.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-starter-1)
+
 based on <https://github.com/bitjson/typescript-starter>
+
+## Resource
+
+* [API Document](https://euiyeon.github.io/ts-starter-1/)
 
 ## Project
 
@@ -10,7 +17,6 @@ based on <https://github.com/bitjson/typescript-starter>
     * [ ] package.json
     * [ ] dependencies
     * [ ] devdependencies
-    * [ ] d
   * License
   * typesciprt
     * [ ] tsc init
@@ -34,3 +40,7 @@ based on <https://github.com/bitjson/typescript-starter>
 
 * [ ] v0.0.1
 * [ ] v0.0.1
+
+## License
+
+[ISC](./LICENSE)
