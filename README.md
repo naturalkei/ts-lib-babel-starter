@@ -1,9 +1,12 @@
 # ts-starter-1
 
-[![codecov](https://codecov.io/gh/Euiyeon/ts-starter-1/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-starter-1)
 [![CircleCI](https://circleci.com/gh/Euiyeon/ts-starter-1.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-starter-1)
+[![codecov](https://codecov.io/gh/Euiyeon/ts-starter-1/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-starter-1)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
 based on <https://github.com/bitjson/typescript-starter>
+
+[![js-standard-style](https://cdn.rawgit.com/standard/standard/master/badge.svg)](http://standardjs.com)
 
 ## Resource
 
@@ -43,4 +46,4 @@ based on <https://github.com/bitjson/typescript-starter>
 
 ## License
 
-[ISC](./LICENSE)
+[ISC](./LICENSE). Copyright (c) 2019 [Euiyeon](https://github.com/euiyeon)
