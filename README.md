@@ -1,6 +1,6 @@
 # ts-starter-1
 
-[![Coverage Status](https://coveralls.io/repos/github/Euiyeon/ts-starter-1/badge.svg)](https://coveralls.io/github/Euiyeon/ts-starter-1)
+[![codecov](https://codecov.io/gh/Euiyeon/ts-starter-1/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-starter-1)
 [![CircleCI](https://circleci.com/gh/Euiyeon/ts-starter-1.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-starter-1)
 
 based on <https://github.com/bitjson/typescript-starter>
@@ -30,7 +30,7 @@ based on <https://github.com/bitjson/typescript-starter>
     * [ ] ava
     * [ ] nyc
     * code coverage
-      * [ ] <https://coveralls.io>
+      * [ ] <https://codecov.io>
       
 ## Project
 
