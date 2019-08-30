@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/Euiyeon/ts-starter-1.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-starter-1)
 [![codecov](https://codecov.io/gh/Euiyeon/ts-starter-1/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-starter-1)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 based on <https://github.com/bitjson/typescript-starter>
 
