@@ -46,4 +46,4 @@ based on <https://github.com/bitjson/typescript-starter>
 
 ## License
 
-[ISC](./LICENSE). Copyright (c) 2019 [Euiyeon](https://github.com/euiyeon)
+[MIT](./LICENSE). Copyright (c) 2019 [Euiyeon](https://github.com/euiyeon)
