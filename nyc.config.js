@@ -4,17 +4,17 @@
  * https://www.npmjs.com/package/@istanbuljs/nyc-config-typescript
  */
 module.exports = {
-  'extends': '@istanbuljs/nyc-config-typescript',
+  extends: '@istanbuljs/nyc-config-typescript',
   'check-coverage': false,
-  'all': true,
-  'instrument': true,
-  'extension': [
+  all: true,
+  instrument: true,
+  extension: [
     '.ts'
   ],
-  'include': [
+  include: [
     'src/**/*.ts'
   ],
-  'exclude': [
+  exclude: [
     '**/*.d.ts'
-  ],
-};
+  ]
+}
