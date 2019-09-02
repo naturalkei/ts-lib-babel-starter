@@ -10,7 +10,7 @@ tslint.json
 .prettierrc
 .prettierignore
 .vscode
-build/docs
+dist/docs
 **/*.spec.*
 coverage
 .nyc_output

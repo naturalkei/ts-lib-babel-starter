@@ -1,12 +1,12 @@
 export default {
   require: [
-    'ts-node/register',
+    'ts-node/register'
   ],
   files: [
-    'src/**/*.spec.ts',
+    'src/**/*.spec.ts'
   ],
   compileEnhancements: false,
   extensions: [
-    'ts',
-  ],
-};
+    'ts'
+  ]
+}
