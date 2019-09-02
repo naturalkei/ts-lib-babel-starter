@@ -83,18 +83,9 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "prettier": {
-    "singleQuote": true
-  },
   "standard": {
     "ignore": [
       "build"
-    ]
-  },
-  "nyc": {
-    "extends": "@istanbuljs/nyc-config-typescript",
-    "exclude": [
-      "**/*.spec.js"
     ]
   }
 }
