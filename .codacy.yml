@@ -3,4 +3,5 @@
 exclude_paths:
   - '**/*.spect.ts'
   - '/*.config.js'
+  - '/dist'
   - README.md
