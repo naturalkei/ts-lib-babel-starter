@@ -1,0 +1,6 @@
+# https://support.codacy.com/hc/en-us/articles/360005097654-Ignore-files-from-Codacy-analysis
+---
+exclude_paths:
+  - '**/*.spect.ts'
+  - '/*.config.js'
+  - README.md
