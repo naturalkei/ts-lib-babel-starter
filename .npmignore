@@ -4,8 +4,10 @@ tsconfig.json
 tsconfig.module.json
 tslint.json
 .coveralls.yml
+.codacy.yml
 .travis.yml
 .github
+.prettierrc
 .prettierignore
 .vscode
 build/docs
@@ -13,3 +15,5 @@ build/docs
 coverage
 .nyc_output
 *.log
+ava.config.js
+nyc.config.js
