@@ -2,7 +2,6 @@
 
 [![CircleCI](https://circleci.com/gh/Euiyeon/ts-starter-1.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-starter-1)
 [![codecov](https://codecov.io/gh/Euiyeon/ts-starter-1/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-starter-1)
-ts-starter-1?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Euiyeon/ts-starter-1&amp;utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io//test/github/Euiyeon/ts-starter-1/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Euiyeon/ts-starter-1?targetFile=package.json)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
