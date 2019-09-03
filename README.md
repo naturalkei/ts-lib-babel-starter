@@ -14,6 +14,17 @@ based on <https://github.com/bitjson/typescript-starter>
 
 * [API Document](https://euiyeon.github.io/ts-starter-1/)
 
+## Build files
+
+```plain
+├── dist
+|  ├── ibsheet.js       -- umd(es5)
+|  ├── ibsheet.min.js   -- umd.min(es5)
+├── build
+|  ├── main             -- cjs(commonjs, es2015)
+|  ├── build            -- esm(es modules, esnext)
+```
+
 ## Project
 
 * Setup

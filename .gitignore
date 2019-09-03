@@ -2,6 +2,7 @@ build
 test
 src/**.js
 .idea/*
+tree.txt
 package-lock.json
 
 # Created by https://www.gitignore.io/api/node,macos,visualstudiocode

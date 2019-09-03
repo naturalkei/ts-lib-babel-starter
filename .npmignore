@@ -10,10 +10,11 @@ tslint.json
 .prettierrc
 .prettierignore
 .vscode
-dist/docs
+build/docs
 **/*.spec.*
 coverage
 .nyc_output
 *.log
 ava.config.js
 nyc.config.js
+tree.txt
