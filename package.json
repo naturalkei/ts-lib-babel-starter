@@ -8,9 +8,10 @@
   "keywords": [],
   "scripts": {
     "describe": "npm-scripts-info",
-    "build": "run-s clean && run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p tsconfig.module.json",
+    "build": "run-s clean && gulp build",
+    "build:cjs": "trash build/main && gulp build:cjs",
+    "build:esm": "trash build/module && gulp build:esm",
+    "build:umd": "trash dist && gulp build:umd",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:tslint": "tslint --fix --project .",
