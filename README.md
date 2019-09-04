@@ -47,19 +47,19 @@ gulp build
 #### Common JS
 
 * name: `build:cjs`
-* dist: `build/main/**`
+* dest: `build/main/**`
 
 #### ES Modules
 
 * name: `build:esm`
-* dist: `build/module/**`
+* dest: `build/module/**`
 
 #### UMD(Universal Module Definition)
 
 dependent gulp tasks: `build:esm`
 
 * name: `build:umd`
-* dist: `dist/**`
+* dest: `dist/**`
 
 ## Test
 
