@@ -1,10 +1,12 @@
-# ts-starter-1
+# ts-domlib-starter
 
-[![CircleCI](https://circleci.com/gh/Euiyeon/ts-starter-1.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-starter-1)
-[![codecov](https://codecov.io/gh/Euiyeon/ts-starter-1/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-starter-1)
-[![Known Vulnerabilities](https://snyk.io//test/github/Euiyeon/ts-starter-1/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Euiyeon/ts-starter-1?targetFile=package.json)
+[![CircleCI](https://circleci.com/gh/Euiyeon//ts-domlib-starter.svg?style=svg)](https://circleci.com/gh/Euiyeon//ts-domlib-starter)
+[![codecov](https://codecov.io/gh/Euiyeon//ts-domlib-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon//ts-domlib-starter)
+[![Known Vulnerabilities](https://snyk.io//test/github/Euiyeon//ts-domlib-starter/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Euiyeon//ts-domlib-starter?targetFile=package.json)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Typescript-based JavaScript DOM library starter package
 
 based on <https://github.com/bitjson/typescript-starter>
 
@@ -12,51 +14,62 @@ based on <https://github.com/bitjson/typescript-starter>
 
 ## Resource
 
-* [API Document](https://euiyeon.github.io/ts-starter-1/)
+* [API Document](https://euiyeon.github.io/ts-domlib-starter/)
 
-## Build files
+### Continuous integration
 
-```plain
-├── dist
-|  ├── ibsheet.js       -- umd(es5)
-|  ├── ibsheet.min.js   -- umd.min(es5)
-├── build
-|  ├── main             -- cjs(commonjs, es2015)
-|  ├── build            -- esm(es modules, esnext)
+* [CircleCI](https://circleci.com) - Continuous Integration and Delivery
+* [codecov](https://codecov.io) - leading, dedicated code coverage
+* [snyk.io](https://snyk.io) - Continuously find and fix vulnerabilities for npm
+* [Codacy](https://www.codacy.com) - Automated code reviews & code analytics
+
+## Build
+
+```sh
+yarn build
+```
+or
+```sh
+gulp build
 ```
 
-## Project
+### Output
 
-* Setup
-  * [x] github
-  * [ ] npm init
-    * [ ] package.json
-    * [ ] dependencies
-    * [ ] devdependencies
-  * License
-  * typesciprt
-    * [ ] tsc init
-    * [ ] tslint
-  * test source
-  * typedoc
-    * [ ] gh-page
-  * build
-    * circle-ci
-  * test
-    * [ ] ava
-    * [ ] nyc
-    * code coverage
-      * [ ] <https://codecov.io>
-      
-## Project
+```plain
+├── dist        -- UMD, minified
+├── build
+|  ├── main     -- Common JS
+|  ├── module   -- ES Modules
+```
 
-* npm-test-flow
+### Gulp Build Tasks
 
-## Milestone
+#### Common JS
 
-* [ ] v0.0.1
-* [ ] v0.0.1
+* name: `build:cjs`
+* dist: `build/main/**`
 
+#### ES Modules
+
+* name: `build:esm`
+* dist: `build/module/**`
+
+#### UMD(Universal Module Definition)
+
+dependent gulp tasks: `build:esm`
+
+* name: `build:umd`
+* dist: `dist/**`
+
+## Test
+
+```
+yarn test
+```
+
+## TODO
+* [ ] ..
+    
 ## License
 
-[MIT](./LICENSE). Copyright (c) 2019 [Euiyeon](https://github.com/euiyeon)
+[MIT](./LICENSE)
