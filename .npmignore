@@ -3,9 +3,10 @@ test
 tsconfig.json
 tsconfig.module.json
 tslint.json
-.coveralls.yml
-.codacy.yml
-.travis.yml
+tslint.yaml
+.coveralls.yaml
+.codacy.yaml
+.travis.yaml
 .github
 .prettierrc
 .prettierignore

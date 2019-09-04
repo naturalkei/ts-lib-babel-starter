@@ -3,21 +3,11 @@ module.exports = {
     [
       '@babel/preset-env',
       {
-        // targets: {
-        //   esmodules: true
-        // }
-        target: {
-          browsers: [
-            '> 0.25%, not dead',
-          ]
-        },
-        modules: 'umd'
+        targets: '> 0.25%, not dead'
       }
     ],
-    'minify',
   ],
-  plugins: [
-    '@babel/plugin-transform-async-to-generator'
-  ],
-  comments: false,
+  // plugins: [
+  //   '@babel/plugin-transform-async-to-generator'
+  // ]
 }
