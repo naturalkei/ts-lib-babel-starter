@@ -55,7 +55,7 @@ const getTsConfig = (name, sPath, def) => {
 }
 const DIST_BASE_DIR = relativeRoot('dist')
 const UMD_SRC_FILEPATH = join(getTsConfig('esm', 'dist'), 'index.js')
-const UMD_OUTPUT_FILE = 'ibsheet-loader.js'
+const UMD_OUTPUT_FILE = 'bundle.js'
 const UMD_OUTPUT_PATH = join(DIST_BASE_DIR, UMD_OUTPUT_FILE)
 
 const SourceList = ['src/**/*.ts']

@@ -1,7 +1,7 @@
 {
-  "name": "ts-domlib-starter",
+  "name": "ts-lib-babel-starter",
   "version": "0.0.0",
-  "description": "Typescript-based JavaScript DOM library starter package",
+  "description": "typescript-based javascript library starter package",
   "main": "index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
