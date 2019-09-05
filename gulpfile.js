@@ -1,7 +1,23 @@
-const gulp = require('gulp')
+const {
+  task,
+  src,
+  dest,
+  series,
+  parallel
+} = require('gulp')
 const log = require('fancy-log')
 const chalk = require('chalk')
-const path = require('path')
+const { join } = require('path')
+const fs = require('fs')
+const {
+  isNil,
+  get,
+  set,
+  find,
+  castArray,
+  pick,
+  isEmpty
+} = require('lodash')
 // https://github.com/gulp-sourcemaps/gulp-sourcemaps
 const sourcemaps = require('gulp-sourcemaps')
 const gulpClean = require('gulp-clean')
@@ -12,21 +28,9 @@ const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 const babel = require('babelify')
 const banner = require('gulp-banner')
-const bannerjs = require('bannerjs')
 const pump = require('pump')
 const rename = require('gulp-rename')
 const watchify = require('watchify')
-const fs = require('fs')
-
-const isNil = require('lodash/isNil')
-const get = require('lodash/get')
-const set = require('lodash/set')
-const find = require('lodash/find')
-const castArray = require('lodash/castArray')
-const pick = require('lodash/pick')
-const isEmpty = require('lodash/isEmpty')
-
-const join = path.join
 
 const BUILD_BASE_DIR = 'build'
 const TsProjectData = [
@@ -70,10 +74,11 @@ const getMinify = () => {
   return _minify
 }
 let bannerStr
-const getBanner = bool => {
+const getBanner = isLog => {
   if (isNil(bannerStr)) {
+    const { multibanner } = require('bannerjs')
     const pkg = require('./package.json')
-    bannerStr = bannerjs.multibanner(pick(pkg, [
+    bannerStr = multibanner(pick(pkg, [
       'author',
       'name',
       'license',
@@ -82,18 +87,11 @@ const getBanner = bool => {
       'homepage'
     ]))
   }
-  if (bool) {
+  if (isLog) {
     log(chalk.gray('\n' + bannerStr))
   }
   return bannerStr
 }
-// const BabelOptions = {
-//   presets: [
-//     ['@babel/preset-env', {
-//       targets: '> 0.25%, not dead'
-//     }]
-//   ]
-// }
 
 const exists = file => {
   return new Promise((resolve, reject) => {
@@ -114,8 +112,8 @@ const exists = file => {
   })
 }
 
-const clean = async (src, done) => {
-  const tmpArr = castArray(src).slice()
+const clean = async (target, done) => {
+  const tmpArr = castArray(target).slice()
   const prmTasks = tmpArr.map(file => exists(file))
   let newSrc
   await Promise.all(prmTasks).then(result => {
@@ -124,11 +122,12 @@ const clean = async (src, done) => {
       .map(data => data.file)
   }).catch(err => log(err))
   if (isEmpty(newSrc)) return done()
-  return gulp.src(newSrc)
+  return src(newSrc)
     .pipe(gulpClean({ force: true }))
-    .on('finish', () => {
+    .on('start', () => {
       const msg = `* clean: ${newSrc.join(', ')}`
       log(chalk.green(msg))
+      done()
     })
 }
 
@@ -141,22 +140,22 @@ const tsBuild = (name, done) => {
     tsProject = ts.createProject(tsData.config)
     set(tsData, 'project', tsProject)
   }
-  const tsResult = gulp.src(SourceList)
+  const tsResult = src(SourceList)
     .pipe(sourcemaps.init())
     .pipe(tsProject())
   return merge([
     tsResult.dts,
     tsResult.js.pipe(sourcemaps.write('.'))
-  ]).pipe(gulp.dest(tsData.dist))
+  ]).pipe(dest(tsData.dist))
     .on('end', () => done())
 }
 
-gulp.task('default', done => {
+task('default', done => {
   log('default task.. ok!')
   done()
 })
 
-gulp.task('clean:test', done => {
+task('clean:test', done => {
   return clean([
     'build/main',
     'coverage',
@@ -168,20 +167,20 @@ gulp.task('clean:test', done => {
   ], done)
 })
 
-gulp.task('clean:build', done => {
+task('clean:build', done => {
   return clean(BUILD_BASE_DIR, done)
 })
-gulp.task('clean:dist', done => {
+task('clean:dist', done => {
   return clean(DIST_BASE_DIR, done)
 })
 
-gulp.task('clean', gulp.parallel([
+task('clean', parallel([
   'build', 'dist'
 ].map(dir => 'clean:' + dir)))
 
 // build:cjs, build:esm
 ;['cjs', 'esm'].forEach(name => {
-  gulp.task(`build:${name}`, gulp.series(...[
+  task(`build:${name}`, series(...[
     function cleanDest (done) {
       return clean(getTsConfig(name, 'dist'), done)
     },
@@ -192,7 +191,7 @@ gulp.task('clean', gulp.parallel([
 })
 
 // build:umd
-gulp.task('build:umd', gulp.series(...[
+task('build:umd', series(...[
   'build:esm',
   'clean:dist',
   function umdBuild (done) {
@@ -208,18 +207,18 @@ gulp.task('build:umd', gulp.series(...[
       .pipe(sourcemaps.init({ loadMaps: true }))
       .pipe(sourcemaps.write('./'))
       .pipe(banner(getBanner(true)))
-      .pipe(gulp.dest(DIST_BASE_DIR))
+      .pipe(dest(DIST_BASE_DIR))
       .on('end', () => done())
   }
 ]))
 
 // Build: UMD + Minify
-gulp.task('build:umd.min', gulp.series(...[
+task('build:umd.min', series(...[
   'build:umd',
   function umdMinify (done) {
     const minify = getMinify()
     pump([
-      gulp.src(UMD_OUTPUT_PATH),
+      src(UMD_OUTPUT_PATH),
       sourcemaps.init({ loadMaps: true }),
       minify({
         // https://github.com/mishoo/UglifyJS2#minify-options
@@ -228,17 +227,17 @@ gulp.task('build:umd.min', gulp.series(...[
       rename({ suffix: '.min' }),
       sourcemaps.write('.'),
       banner(getBanner()),
-      gulp.dest(DIST_BASE_DIR)
+      dest(DIST_BASE_DIR)
     ], done)
   }
 ]))
 
-gulp.task('watch', done => {
+task('watch', done => {
   log('TODO: watch task')
   done()
 })
 
-gulp.task('build', gulp.series(...[
+task('build', series(...[
   'clean',
   [
     'build:cjs',
