@@ -110,10 +110,10 @@ const exists = file => {
 }
 
 const clean = async (target, done) => {
-  const tmpArr = castArray(target).slice()
-  const prmTasks = tmpArr.map(file => exists(file))
+  const arr = castArray(target).slice()
+  const checklist = arr.map(file => exists(file))
   let newSrc
-  await Promise.all(prmTasks).then(result => {
+  await Promise.all(checklist).then(result => {
     newSrc = result
       .filter(data => data.exist)
       .map(data => data.file)
@@ -125,8 +125,6 @@ const clean = async (target, done) => {
   log(chalk.green(`clean: ${newSrc.join(', ')}`))
   return src(newSrc).pipe(gulpClean({ force: true }))
 }
-
-let umdBundler
 
 const tsBuild = (name, done) => {
   const tsData = getTsConfig(name)
@@ -149,23 +147,26 @@ task('default', done => {
   log('default task.. ok!')
   done()
 })
+
+// ********** [ Clean Tasks ] **********
 task('clean:build', done => {
   return clean(BUILD_BASE_DIR, done)
 })
 task('clean:dist', done => {
   return clean(DIST_BASE_DIR, done)
 })
-task('clean', parallel([
+task('clean', parallel(...[
   'build', 'dist'
 ].map(dir => 'clean:' + dir)))
 
+// ********** [ Unit Tests ] **********
 task('test:unit', done => {
   return src('src/**/*.spec.ts')
     .pipe(ava({ verbose: true }))
     .on('finish', () => done())
 })
 
-// build:cjs, build:esm
+// ********** [ Build: Common JS, ES Modules ] **********
 ;['cjs', 'esm'].forEach(name => {
   task(`clean:${name}`, done => {
     return clean(getTsConfig(name, 'dist'), done)
@@ -180,19 +181,26 @@ task('test:unit', done => {
     `build:${name}`,
     'test:unit',
     function watchTsProject (done) {
-      log('Watch process starting for', chalk.black.bgGreen(` ${name} `))
+      const moduleType = (name === 'cjs') ? 'Common JS' : 'ES Modules'
+      log('Watch process starting for', chalk.black.bgGreen(` ${moduleType} `))
       return watch(SourceList, series(`build:${name}`, 'test:unit'))
     }
   ))
 })
 
-// build:umd
+// ********** [ Build: UMD ] **********
+let umdBundler
+
 task('build:umd', series(
   'build:esm',
   'clean:dist',
-  function umdBuild (done) {
-    umdBundler = umdBundler || browserify(
-      UMD_SRC_FILEPATH, { debug: true }).transform(babel)
+  function umdCompile (done) {
+    if (isNil(umdBundler)) {
+      umdBundler = watchify(
+        browserify(UMD_SRC_FILEPATH, { debug: true })
+          .transform(babel)
+      )
+    }
     return umdBundler.bundle()
       .on('error', err => {
         log.error(err)
@@ -228,6 +236,7 @@ task('build:umd.min', series(
   }
 ))
 
+// ********** [ Build All ] **********
 task('build', series(
   'clean',
   parallel(
