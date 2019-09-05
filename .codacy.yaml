@@ -1,3 +1,5 @@
+# ".codacy.yaml" or ".codacy.yml"
+# https://support.codacy.com/hc/en-us/articles/115002130625-Codacy-Configuration-File
 # https://support.codacy.com/hc/en-us/articles/360005097654-Ignore-files-from-Codacy-analysis
 ---
 exclude_paths:

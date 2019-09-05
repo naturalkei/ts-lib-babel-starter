@@ -1,6 +1,6 @@
 # ts-domlib-starter
 
-[![CircleCI](https://circleci.com/gh/Euiyeon//ts-domlib-starter.svg?style=svg)](https://circleci.com/gh/Euiyeon//ts-domlib-starter)
+[![CircleCI](https://circleci.com/gh/Euiyeon/ts-domlib-starter.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-domlib-starter)
 [![codecov](https://codecov.io/gh/Euiyeon//ts-domlib-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon//ts-domlib-starter)
 [![Known Vulnerabilities](https://snyk.io//test/github/Euiyeon//ts-domlib-starter/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Euiyeon//ts-domlib-starter?targetFile=package.json)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
@@ -63,8 +63,14 @@ dependent gulp tasks: `build:esm`
 
 ## Test
 
-```
+```sh
 yarn test
+```
+
+### Coverage Check
+
+```sh
+yarn cov:check
 ```
 
 ## TODO
@@ -72,4 +78,4 @@ yarn test
     
 ## License
 
-[MIT](./LICENSE)
+MIT. See [LICENSE](./LICENSE) for details.

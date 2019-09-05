@@ -1,13 +1,19 @@
+/**
+ * Babel API options
+ * https://babeljs.io/docs/en/configuration
+ */
+
+// https://babeljs.io/docs/en/babel-preset-env
+const presets = [
+  '@babel/preset-env',
+]
+
+// https://babeljs.io/docs/en/plugins
+// const plugins = [
+//   '@babel/plugin-transform-async-to-generator'
+// ]
+
 module.exports = {
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        targets: '> 0.25%, not dead'
-      }
-    ],
-  ],
-  // plugins: [
-  //   '@babel/plugin-transform-async-to-generator'
-  // ]
+  presets,
+  // plugins
 }

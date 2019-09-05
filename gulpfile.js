@@ -1,38 +1,37 @@
 const {
-  task,
-  src,
-  dest,
-  series,
-  parallel
+  task, src, dest,
+  series, parallel
 } = require('gulp')
 const log = require('fancy-log')
 const chalk = require('chalk')
-const { join } = require('path')
+const { join, relative } = require('path')
 const fs = require('fs')
 const {
-  isNil,
-  get,
-  set,
-  find,
-  castArray,
-  pick,
-  isEmpty
+  isNil, get, set,
+  find, castArray,
+  pick, isEmpty
 } = require('lodash')
+const ava = require('gulp-ava')
+const banner = require('gulp-banner')
+const gulpClean = require('gulp-clean')
+const rename = require('gulp-rename')
 // https://github.com/gulp-sourcemaps/gulp-sourcemaps
 const sourcemaps = require('gulp-sourcemaps')
-const gulpClean = require('gulp-clean')
 const ts = require('gulp-typescript')
+const watch = require('gulp-watch')
 const merge = require('merge-stream')
 const browserify = require('browserify')
 const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 const babel = require('babelify')
-const banner = require('gulp-banner')
 const pump = require('pump')
-const rename = require('gulp-rename')
 const watchify = require('watchify')
 
-const BUILD_BASE_DIR = 'build'
+const relativeRoot = (...args) => {
+  args.unshift(__dirname)
+  return relative(__dirname, join.apply(null, args))
+}
+const BUILD_BASE_DIR = relativeRoot('build')
 const TsProjectData = [
   {
     name: 'cjs',
@@ -48,14 +47,13 @@ const TsProjectData = [
   set(obj, 'project', null)
   return obj
 })
-
 const getTsConfig = (name, sPath, def) => {
   const data = find(TsProjectData, { name })
   if (isNil(data)) throw new Error(`not found ${name} project data`)
   if (isNil(sPath)) return data
   return get(data, sPath, def)
 }
-const DIST_BASE_DIR = 'dist'
+const DIST_BASE_DIR = relativeRoot('dist')
 const UMD_SRC_FILEPATH = join(getTsConfig('esm', 'dist'), 'index.js')
 const UMD_OUTPUT_FILE = 'ibsheet-loader.js'
 const UMD_OUTPUT_PATH = join(DIST_BASE_DIR, UMD_OUTPUT_FILE)
@@ -100,8 +98,7 @@ const exists = file => {
       let bool = true
       if (err) {
         bool = false
-        msg = `"${file}" ${err.code === 'ENOENT' ? 'does not exist' : 'is read-only'}`
-        msg = chalk.gray(msg)
+        msg = chalk.gray(`"${file}" ${err.code === 'ENOENT' ? 'does not exist' : 'is read-only'}`)
       }
       return resolve({
         file,
@@ -121,14 +118,12 @@ const clean = async (target, done) => {
       .filter(data => data.exist)
       .map(data => data.file)
   }).catch(err => log(err))
-  if (isEmpty(newSrc)) return done()
-  return src(newSrc)
-    .pipe(gulpClean({ force: true }))
-    .on('start', () => {
-      const msg = `* clean: ${newSrc.join(', ')}`
-      log(chalk.green(msg))
-      done()
-    })
+  if (isEmpty(newSrc)) {
+    log(chalk.gray('skip clean'))
+    return done()
+  }
+  log(chalk.green(`clean: ${newSrc.join(', ')}`))
+  return src(newSrc).pipe(gulpClean({ force: true }))
 }
 
 let umdBundler
@@ -154,44 +149,45 @@ task('default', done => {
   log('default task.. ok!')
   done()
 })
-
-task('clean:test', done => {
-  return clean([
-    'build/main',
-    'coverage',
-    'build/src',
-    'dist',
-    'build/module',
-    'build/test',
-    'test'
-  ], done)
-})
-
 task('clean:build', done => {
   return clean(BUILD_BASE_DIR, done)
 })
 task('clean:dist', done => {
   return clean(DIST_BASE_DIR, done)
 })
-
 task('clean', parallel([
   'build', 'dist'
 ].map(dir => 'clean:' + dir)))
 
+task('test:unit', done => {
+  return src('src/**/*.spec.ts')
+    .pipe(ava({ verbose: true }))
+    .on('finish', () => done())
+})
+
 // build:cjs, build:esm
 ;['cjs', 'esm'].forEach(name => {
-  task(`build:${name}`, series(...[
-    function cleanDest (done) {
-      return clean(getTsConfig(name, 'dist'), done)
-    },
+  task(`clean:${name}`, done => {
+    return clean(getTsConfig(name, 'dist'), done)
+  })
+  task(`build:${name}`, series(
+    `clean:${name}`,
     function tsProjectBuild (done) {
       return tsBuild(name, done)
     }
-  ]))
+  ))
+  task(`watch:${name}`, series(
+    `build:${name}`,
+    'test:unit',
+    function watchTsProject (done) {
+      log('Watch process starting for', chalk.black.bgGreen(` ${name} `))
+      return watch(SourceList, series(`build:${name}`, 'test:unit'))
+    }
+  ))
 })
 
 // build:umd
-task('build:umd', series(...[
+task('build:umd', series(
   'build:esm',
   'clean:dist',
   function umdBuild (done) {
@@ -210,10 +206,10 @@ task('build:umd', series(...[
       .pipe(dest(DIST_BASE_DIR))
       .on('end', () => done())
   }
-]))
+))
 
 // Build: UMD + Minify
-task('build:umd.min', series(...[
+task('build:umd.min', series(
   'build:umd',
   function umdMinify (done) {
     const minify = getMinify()
@@ -230,18 +226,13 @@ task('build:umd.min', series(...[
       dest(DIST_BASE_DIR)
     ], done)
   }
-]))
+))
 
-task('watch', done => {
-  log('TODO: watch task')
-  done()
-})
-
-task('build', series(...[
+task('build', series(
   'clean',
-  [
+  parallel(
     'build:cjs',
-    // build:esm --> build:umd
+    // series(build:esm, build:umd)
     'build:umd.min'
-  ]
-]))
+  )
+))

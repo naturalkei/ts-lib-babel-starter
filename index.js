@@ -1,1 +1,1 @@
-export * from './build/module'
+export * from './build/main'

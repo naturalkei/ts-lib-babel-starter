@@ -3,22 +3,22 @@
   "version": "0.0.0",
   "description": "Typescript-based JavaScript DOM library starter package",
   "main": "index.js",
-  "typings": "dist/main/index.d.ts",
-  "module": "dist/module/index.js",
+  "typings": "build/main/index.d.ts",
+  "module": "build/module/index.js",
   "keywords": [],
   "scripts": {
     "describe": "npm-scripts-info",
     "build": "run-s clean && gulp build",
-    "build:cjs": "trash build/main && gulp build:cjs",
-    "build:esm": "trash build/module && gulp build:esm",
-    "build:umd": "trash dist && gulp build:umd",
+    "build:main": "gulp build:cjs",
+    "build:esm": "gulp build:esm",
+    "build:umd": "gulp build:umd.min",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:tslint": "tslint --fix --project .",
     "test": "run-s build test:*",
     "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
     "test:unit": "nyc --silent ava --verbose",
-    "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
+    "watch": "gulp watch:cjs",
     "cov": "run-s build test:unit cov:html && open-cli coverage/index.html",
     "cov:html": "nyc report --reporter=html",
     "cov:send": "nyc report --reporter=lcov && codecov",
@@ -74,12 +74,14 @@
     "fancy-log": "^1.3.3",
     "gh-pages": "^2.1.1",
     "gulp": "^4.0.2",
+    "gulp-ava": "^2.0.0",
     "gulp-banner": "^0.1.3",
     "gulp-clean": "^0.4.0",
     "gulp-rename": "^1.4.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.1",
     "gulp-uglify": "^3.0.2",
+    "gulp-watch": "^5.0.1",
     "merge-stream": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "npm-scripts-info": "^0.3.9",
@@ -106,9 +108,33 @@
     }
   },
   "standard": {
-    "ignore": [
-      "dist",
-      "build"
-    ]
-  }
+    "ignore": ["dist", "build"]
+  },
+  "ava": {
+    "require": ["ts-node/register"],
+    "files": ["src/**/*.spec.ts"],
+    "sources": ["src/**/*.ts"],
+    "compileEnhancements": false,
+    "extensions": ["ts"]
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "check-coverage": false,
+    "all": true,
+    "instrument": true,
+    "extension": [".ts"],
+    "include": ["src/**/*.ts"],
+    "exclude": ["**/*.d.ts"]
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead"
+  ]
 }
