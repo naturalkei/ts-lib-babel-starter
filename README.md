@@ -12,21 +12,21 @@ based on <https://github.com/bitjson/typescript-starter>
 
 [![js-standard-style](https://cdn.rawgit.com/standard/standard/master/badge.svg)](http://standardjs.com)
 
-## Features
+## features
 
 * typescript3
 * gulp4 task runner
 * babel + browserify bundler
 * ava + nyc
 
-### Continuous integration
+### continuous integration
 
 * [CircleCI](https://circleci.com) - Continuous Integration and Delivery
 * [codecov](https://codecov.io) - leading, dedicated code coverage
 * [snyk.io](https://snyk.io) - Continuously find and fix vulnerabilities for npm
 * [Codacy](https://www.codacy.com) - Automated code reviews & code analytics
 
-## Build
+## build
 
 ```sh
 yarn build
@@ -36,7 +36,7 @@ or
 gulp build
 ```
 
-### Output
+### build output
 
 ```plain
 ├── dist        -- UMD, minified
@@ -45,40 +45,40 @@ gulp build
 |  ├── module   -- ES Modules
 ```
 
-### Gulp Build Tasks
+### gulp tasks
 
-#### Common JS
+#### common js
 
 * name: `build:cjs`
 * dest: `build/main/**`
 
-#### ES Modules
+#### es modules
 
 * name: `build:esm`
 * dest: `build/module/**`
 
-#### UMD(Universal Module Definition)
+#### umd
 
 dependent gulp tasks: `build:esm`
 
 * name: `build:umd`
 * dest: `dist/**`
 
-## Test
+## test
 
 ```sh
 yarn test
 ```
 
-### Coverage Check
+### code coverage
 
 ```sh
 yarn cov:check
 ```
 
-## TODO
+## todo
 * [ ] ..
     
-## License
+## license
 
 [MIT](./LICENSE)

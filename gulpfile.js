@@ -13,7 +13,7 @@ const {
 } = require('lodash')
 const ava = require('gulp-ava')
 const banner = require('gulp-banner')
-const gulpClean = require('gulp-clean')
+const clean = require('gulp-clean')
 const rename = require('gulp-rename')
 // https://github.com/gulp-sourcemaps/gulp-sourcemaps
 const sourcemaps = require('gulp-sourcemaps')
@@ -25,7 +25,6 @@ const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 const babel = require('babelify')
 const pump = require('pump')
-const watchify = require('watchify')
 
 const relativeRoot = (...args) => {
   args.unshift(__dirname)
@@ -55,10 +54,11 @@ const getTsConfig = (name, sPath, def) => {
 }
 const DIST_BASE_DIR = relativeRoot('dist')
 const UMD_SRC_FILEPATH = join(getTsConfig('esm', 'dist'), 'index.js')
-const UMD_OUTPUT_FILE = 'bundle.js'
+const UMD_OUTPUT_NAME = 'bundle'
+const UMD_OUTPUT_FILE = `${UMD_OUTPUT_NAME}.js`
 const UMD_OUTPUT_PATH = join(DIST_BASE_DIR, UMD_OUTPUT_FILE)
 
-const SourceList = ['src/**/*.ts']
+const SourceFiles = ['src/**/*.ts']
 
 let _minify
 const getMinify = () => {
@@ -72,7 +72,7 @@ const getMinify = () => {
   return _minify
 }
 let bannerStr
-const getBanner = isLog => {
+const getBanner = () => {
   if (isNil(bannerStr)) {
     const { multibanner } = require('bannerjs')
     const pkg = require('./package.json')
@@ -84,8 +84,6 @@ const getBanner = isLog => {
       'description',
       'homepage'
     ]))
-  }
-  if (isLog) {
     log(chalk.gray('\n' + bannerStr))
   }
   return bannerStr
@@ -109,7 +107,8 @@ const exists = file => {
   })
 }
 
-const clean = async (target, done) => {
+const cleanRealPath = async (target, done) => {
+  if (isNil(target)) return done()
   const arr = castArray(target).slice()
   const checklist = arr.map(file => exists(file))
   let newSrc
@@ -123,7 +122,7 @@ const clean = async (target, done) => {
     return done()
   }
   log(chalk.green(`clean: ${newSrc.join(', ')}`))
-  return src(newSrc).pipe(gulpClean({ force: true }))
+  return src(newSrc).pipe(clean({ force: true }))
 }
 
 const tsBuild = (name, done) => {
@@ -133,7 +132,7 @@ const tsBuild = (name, done) => {
     tsProject = ts.createProject(tsData.config)
     set(tsData, 'project', tsProject)
   }
-  const tsResult = src(SourceList)
+  const tsResult = src(SourceFiles)
     .pipe(sourcemaps.init())
     .pipe(tsProject())
   return merge([
@@ -143,21 +142,38 @@ const tsBuild = (name, done) => {
     .on('end', () => done())
 }
 
+const createTsWatchTask = (name, tasks) => {
+  let moduleType
+  switch (name) {
+    case 'cjs': moduleType = 'Common JS'; break
+    case 'esm': moduleType = 'ES Modules'; break
+    case 'umd': moduleType = 'UMD'; break
+    default: throw new Error(`undefined ${name} module type`)
+  }
+  task(`watch:${name}`, series(
+    tasks,
+    function watchTsProject (done) {
+      log(chalk.black.bgGreen(` ${moduleType} `), 'watch process starting')
+      return watch(SourceFiles, tasks)
+    }
+  ))
+}
+
+// ********** [ Default Task ] **********
 task('default', done => {
   log('default task.. ok!')
   done()
 })
 
 // ********** [ Clean Tasks ] **********
-task('clean:build', done => {
-  return clean(BUILD_BASE_DIR, done)
+task('clean:build', done => cleanRealPath(BUILD_BASE_DIR, done))
+task('clean:dist', done => cleanRealPath(DIST_BASE_DIR, done))
+task('clean:umd', () => {
+  const files = join(DIST_BASE_DIR, `${UMD_OUTPUT_NAME}.*`)
+  log(chalk.green(`clean: ${files}`))
+  return src(files).pipe(clean({ force: true }))
 })
-task('clean:dist', done => {
-  return clean(DIST_BASE_DIR, done)
-})
-task('clean', parallel(...[
-  'build', 'dist'
-].map(dir => 'clean:' + dir)))
+task('clean', parallel(...['build', 'dist'].map(dir => 'clean:' + dir)))
 
 // ********** [ Unit Tests ] **********
 task('test:unit', done => {
@@ -169,7 +185,7 @@ task('test:unit', done => {
 // ********** [ Build: Common JS, ES Modules ] **********
 ;['cjs', 'esm'].forEach(name => {
   task(`clean:${name}`, done => {
-    return clean(getTsConfig(name, 'dist'), done)
+    return cleanRealPath(getTsConfig(name, 'dist'), done)
   })
   task(`build:${name}`, series(
     `clean:${name}`,
@@ -177,15 +193,7 @@ task('test:unit', done => {
       return tsBuild(name, done)
     }
   ))
-  task(`watch:${name}`, series(
-    `build:${name}`,
-    'test:unit',
-    function watchTsProject (done) {
-      const moduleType = (name === 'cjs') ? 'Common JS' : 'ES Modules'
-      log('Watch process starting for', chalk.black.bgGreen(` ${moduleType} `))
-      return watch(SourceList, series(`build:${name}`, 'test:unit'))
-    }
-  ))
+  createTsWatchTask(name, parallel('test:unit', `build:${name}`))
 })
 
 // ********** [ Build: UMD ] **********
@@ -193,13 +201,11 @@ let umdBundler
 
 task('build:umd', series(
   'build:esm',
-  'clean:dist',
-  function umdCompile (done) {
+  'clean:umd',
+  function umdBundle (done) {
     if (isNil(umdBundler)) {
-      umdBundler = watchify(
-        browserify(UMD_SRC_FILEPATH, { debug: true })
-          .transform(babel)
-      )
+      umdBundler = browserify(UMD_SRC_FILEPATH, { debug: true })
+        .transform(babel)
     }
     return umdBundler.bundle()
       .on('error', err => {
@@ -210,7 +216,7 @@ task('build:umd', series(
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps: true }))
       .pipe(sourcemaps.write('./'))
-      .pipe(banner(getBanner(true)))
+      .pipe(banner(getBanner()))
       .pipe(dest(DIST_BASE_DIR))
       .on('end', () => done())
   }
@@ -235,6 +241,9 @@ task('build:umd.min', series(
     ], done)
   }
 ))
+
+// Watch: UMD
+createTsWatchTask('umd', parallel('test:unit', 'build:umd'))
 
 // ********** [ Build All ] **********
 task('build', series(

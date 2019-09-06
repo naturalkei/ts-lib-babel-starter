@@ -99,8 +99,7 @@
     "typescript": "^3.6.2",
     "uglify-js": "^3.6.0",
     "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0",
-    "watchify": "^3.11.1"
+    "vinyl-source-stream": "^2.0.0"
   },
   "config": {
     "commitizen": {
@@ -108,14 +107,25 @@
     }
   },
   "standard": {
-    "ignore": ["dist", "build"]
+    "ignore": [
+      "dist",
+      "build"
+    ]
   },
   "ava": {
-    "require": ["ts-node/register"],
-    "files": ["src/**/*.spec.ts"],
-    "sources": ["src/**/*.ts"],
+    "require": [
+      "ts-node/register"
+    ],
+    "files": [
+      "src/**/*.spec.ts"
+    ],
+    "sources": [
+      "src/**/*.ts"
+    ],
     "compileEnhancements": false,
-    "extensions": ["ts"]
+    "extensions": [
+      "ts"
+    ]
   },
   "prettier": {
     "tabWidth": 2,
@@ -127,9 +137,15 @@
     "check-coverage": false,
     "all": true,
     "instrument": true,
-    "extension": [".ts"],
-    "include": ["src/**/*.ts"],
-    "exclude": ["**/*.d.ts"]
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ]
   },
   "browserslist": [
     "> 0.5%",
