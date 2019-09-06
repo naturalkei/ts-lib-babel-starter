@@ -1,5 +1,6 @@
 # ts-lib-babel-starter
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/628a17ff37c24f179896b83036fbb26c)](https://www.codacy.com/app/Euiyeon/ts-lib-babel-starter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Euiyeon/ts-lib-babel-starter&amp;utm_campaign=Badge_Grade)
 [![CircleCI](https://circleci.com/gh/Euiyeon/ts-lib-babel-starter.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-lib-babel-starter)
 [![codecov](https://codecov.io/gh/Euiyeon/ts-lib-babel-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-lib-babel-starter)
 [![Known Vulnerabilities](https://snyk.io//test/github/Euiyeon//ts-lib-babel-starter/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Euiyeon//ts-lib-babel-starter?targetFile=package.json)
