@@ -1,23 +1,24 @@
 {
-  "name": "ts-starter-1",
+  "name": "ts-lib-babel-starter",
   "version": "0.0.0",
-  "description": "typescript based js lib test",
+  "description": "typescript-based javascript library starter package",
   "main": "index.js",
-  "typings": "dist/main/index.d.ts",
-  "module": "dist/module/index.js",
+  "typings": "build/main/index.d.ts",
+  "module": "build/module/index.js",
   "keywords": [],
   "scripts": {
     "describe": "npm-scripts-info",
-    "build": "run-s clean && run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p tsconfig.module.json",
+    "build": "run-s clean && gulp build",
+    "build:main": "gulp build:cjs",
+    "build:esm": "gulp build:esm",
+    "build:umd": "gulp build:umd.min",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:tslint": "tslint --fix --project .",
     "test": "run-s build test:*",
     "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
     "test:unit": "nyc --silent ava --verbose",
-    "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
+    "watch": "gulp watch:cjs",
     "cov": "run-s build test:unit cov:html && open-cli coverage/index.html",
     "cov:html": "nyc report --reporter=html",
     "cov:send": "nyc report --reporter=lcov && codecov",
@@ -28,9 +29,9 @@
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d dist/docs",
     "version": "standard-version",
     "reset": "git clean -dfx && git reset --hard && yarn",
-    "clean": "trash build test",
+    "clean": "trash build dist test",
     "prepare-release": "run-s reset test cov:check doc:html version doc:publish",
-    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('ts-starter-1 must be installed with Yarn: https://yarnpkg.com/')\""
+    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('ts-domlib-starter must be installed with Yarn: https://yarnpkg.com/')\""
   },
   "scripts-info": {
     "info": "Display information about the package scripts",
@@ -46,29 +47,48 @@
     "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
   },
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Euiyeon/ts-starter-1.git"
+    "url": "git+https://github.com/Euiyeon/ts-domlib-starter.git"
   },
   "author": "Euiyeon <ppang327@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Euiyeon/ts-starter-1/issues"
+    "url": "https://github.com/Euiyeon/ts-domlib-starter/issues"
   },
-  "homepage": "https://github.com/Euiyeon/ts-starter-1#readme",
-  "dependencies": {},
+  "homepage": "https://github.com/Euiyeon/ts-domlib-starter#readme",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "ava": "^2.3.0",
+    "babelify": "^10.0.0",
+    "bannerjs": "^1.0.6",
+    "browserify": "^16.5.0",
     "codecov": "^3.5.0",
     "cz-conventional-changelog": "^3.0.2",
+    "fancy-log": "^1.3.3",
     "gh-pages": "^2.1.1",
+    "gulp": "^4.0.2",
+    "gulp-ava": "^2.0.0",
+    "gulp-banner": "^0.1.3",
+    "gulp-clean": "^0.4.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^5.0.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-watch": "^5.0.1",
+    "merge-stream": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "npm-scripts-info": "^0.3.9",
     "nyc": "^14.1.1",
     "open-cli": "^5.0.0",
     "prettier": "^1.18.2",
+    "pump": "^3.0.0",
     "standard-version": "^7.0.0",
     "trash-cli": "^3.0.0",
     "ts-node": "^8.3.0",
@@ -76,7 +96,10 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
     "tslint-immutable": "^6.0.1",
-    "typescript": "^3.6.2"
+    "typescript": "^3.6.2",
+    "uglify-js": "^3.6.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "config": {
     "commitizen": {
@@ -85,7 +108,49 @@
   },
   "standard": {
     "ignore": [
+      "dist",
       "build"
     ]
-  }
+  },
+  "ava": {
+    "require": [
+      "ts-node/register"
+    ],
+    "files": [
+      "src/**/*.spec.ts"
+    ],
+    "sources": [
+      "src/**/*.ts"
+    ],
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ]
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "check-coverage": false,
+    "all": true,
+    "instrument": true,
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ]
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead"
+  ]
 }

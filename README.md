@@ -1,52 +1,84 @@
-# ts-starter-1
+# ts-lib-babel-starter
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2cbb981d576f49a2b54793450999fa7c)](https://app.codacy.com/app/Euiyeon/ts-starter-1?utm_source=github.com&utm_medium=referral&utm_content=Euiyeon/ts-starter-1&utm_campaign=Badge_Grade_Dashboard)
-[![CircleCI](https://circleci.com/gh/Euiyeon/ts-starter-1.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-starter-1)
-[![codecov](https://codecov.io/gh/Euiyeon/ts-starter-1/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-starter-1)
-[![Known Vulnerabilities](https://snyk.io//test/github/Euiyeon/ts-starter-1/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Euiyeon/ts-starter-1?targetFile=package.json)
+[![CircleCI](https://circleci.com/gh/Euiyeon/ts-lib-babel-starter.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-lib-babel-starter)
+[![codecov](https://codecov.io/gh/Euiyeon//ts-lib-babel-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon//ts-lib-babel-starter)
+[![Known Vulnerabilities](https://snyk.io//test/github/Euiyeon//ts-lib-babel-starter/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Euiyeon//ts-lib-babel-starter?targetFile=package.json)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+typescript-based javascript library starter package
 
 based on <https://github.com/bitjson/typescript-starter>
 
 [![js-standard-style](https://cdn.rawgit.com/standard/standard/master/badge.svg)](http://standardjs.com)
 
-## Resource
+## features
 
-* [API Document](https://euiyeon.github.io/ts-starter-1/)
+* typescript3
+* gulp4 task runner
+* babel + browserify bundler
+* ava + nyc
 
-## Project
+### continuous integration
 
-* Setup
-  * [x] github
-  * [ ] npm init
-    * [ ] package.json
-    * [ ] dependencies
-    * [ ] devdependencies
-  * License
-  * typesciprt
-    * [ ] tsc init
-    * [ ] tslint
-  * test source
-  * typedoc
-    * [ ] gh-page
-  * build
-    * circle-ci
-  * test
-    * [ ] ava
-    * [ ] nyc
-    * code coverage
-      * [ ] <https://codecov.io>
-      
-## Project
+* [CircleCI](https://circleci.com) - Continuous Integration and Delivery
+* [codecov](https://codecov.io) - leading, dedicated code coverage
+* [snyk.io](https://snyk.io) - Continuously find and fix vulnerabilities for npm
+* [Codacy](https://www.codacy.com) - Automated code reviews & code analytics
 
-* npm-test-flow
+## build
 
-## Milestone
+```sh
+yarn build
+```
+or
+```sh
+gulp build
+```
 
-* [ ] v0.0.1
-* [ ] v0.0.1
+### build output
 
-## License
+```plain
+├── dist        -- UMD, minified
+├── build
+|  ├── main     -- Common JS
+|  ├── module   -- ES Modules
+```
 
-[MIT](./LICENSE). Copyright (c) 2019 [Euiyeon](https://github.com/euiyeon)
+### gulp tasks
+
+#### common js
+
+* name: `build:cjs`
+* dest: `build/main/**`
+
+#### es modules
+
+* name: `build:esm`
+* dest: `build/module/**`
+
+#### umd
+
+dependent gulp tasks: `build:esm`
+
+* name: `build:umd`
+* dest: `dist/**`
+
+## test
+
+```sh
+yarn test
+```
+
+### code coverage
+
+```sh
+yarn cov:check
+```
+
+## todo
+* [ ] ..
+    
+## license
+
+[MIT](./LICENSE)
