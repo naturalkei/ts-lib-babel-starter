@@ -1,7 +1,7 @@
 # ts-lib-babel-starter
 
 [![CircleCI](https://circleci.com/gh/Euiyeon/ts-lib-babel-starter.svg?style=svg)](https://circleci.com/gh/Euiyeon/ts-lib-babel-starter)
-[![codecov](https://codecov.io/gh/Euiyeon/ts-lib-babel-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon//ts-lib-babel-starter)
+[![codecov](https://codecov.io/gh/Euiyeon/ts-lib-babel-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/Euiyeon/ts-lib-babel-starter)
 [![Known Vulnerabilities](https://snyk.io//test/github/Euiyeon//ts-lib-babel-starter/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Euiyeon//ts-lib-babel-starter?targetFile=package.json)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
