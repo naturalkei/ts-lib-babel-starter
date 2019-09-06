@@ -15,17 +15,19 @@ based on <https://github.com/bitjson/typescript-starter>
 
 ## features
 
-* typescript3
-* gulp4 task runner
-* babel + browserify bundler
-* ava + nyc
+* [x] typescript3
+* [x] tslint
+* [x] standard js
+* [x] ava + nyc
+* [x] gulp4 task runner
+* [x] babel + browserify bundler
 
 ### continuous integration
 
+* [Codacy](https://www.codacy.com) - Automated code reviews & code analytics
 * [CircleCI](https://circleci.com) - Continuous Integration and Delivery
 * [codecov](https://codecov.io) - leading, dedicated code coverage
 * [snyk.io](https://snyk.io) - Continuously find and fix vulnerabilities for npm
-* [Codacy](https://www.codacy.com) - Automated code reviews & code analytics
 
 ## build
 
