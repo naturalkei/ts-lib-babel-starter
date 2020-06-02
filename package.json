@@ -31,7 +31,9 @@
     "reset": "git clean -dfx && git reset --hard && yarn",
     "clean": "trash build dist test",
     "prepare-release": "run-s reset test cov:check doc:html version doc:publish",
-    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('ts-domlib-starter must be installed with Yarn: https://yarnpkg.com/')\""
+    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('ts-domlib-starter must be installed with Yarn: https://yarnpkg.com/')\"",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "scripts-info": {
     "info": "Display information about the package scripts",
@@ -60,7 +62,8 @@
   },
   "homepage": "https://github.com/Euiyeon/ts-domlib-starter#readme",
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "snyk": "^1.334.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -152,5 +155,6 @@
     "last 2 versions",
     "Firefox ESR",
     "not dead"
-  ]
+  ],
+  "snyk": true
 }
